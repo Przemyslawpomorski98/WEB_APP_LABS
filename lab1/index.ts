@@ -1,8 +1,14 @@
 class App{
-    input1: HTMLInputElement;
-    input2: HTMLInputElement;
-    input3: HTMLInputElement;
-    input4: HTMLInputElement;
+    generateInput: HTMLInputElement;
+
+    userInputs: HTMLInputElement;
+
+    newInput: HTMLInputElement;
+
+    // input1: HTMLInputElement;
+    // input2: HTMLInputElement;
+    // input3: HTMLInputElement;
+    // input4: HTMLInputElement;
 
     sum_input: HTMLInputElement;
     avg_input: HTMLInputElement;
@@ -19,10 +25,12 @@ class App{
     }
 
     getInputs(){
-        this.input1 = document.querySelector('#input1');
-        this.input2 = document.querySelector('#input2');
-        this.input3 = document.querySelector('#input3');
-        this.input4 = document.querySelector('#input4');
+        this.generateInput = document.querySelector('#generateInput');
+        this.userInputs = document.querySelector('#userInputs');
+        // this.input1 = document.querySelector('#input1');
+        // this.input2 = document.querySelector('#input2');
+        // this.input3 = document.querySelector('#input3');
+        // this.input4 = document.querySelector('#input4');
         this.sum_input = document.querySelector('#sum');
         this.avg_input = document.querySelector('#avg');
         this.min_input = document.querySelector('#min');
@@ -30,10 +38,36 @@ class App{
     }
 
     checkValues(){
-        this.input1.addEventListener('input', () => this.getCalculatedValues());
-        this.input2.addEventListener('input', () => this.getCalculatedValues());
-        this.input3.addEventListener('input', () => this.getCalculatedValues());
-        this.input4.addEventListener('input', () => this.getCalculatedValues());
+        this.generateInput.addEventListener('input', () => this.generateInputs());
+        
+        // this.input1.addEventListener('input', () => this.getCalculatedValues());
+        // this.input2.addEventListener('input', () => this.getCalculatedValues());
+        // this.input3.addEventListener('input', () => this.getCalculatedValues());
+        // this.input4.addEventListener('input', () => this.getCalculatedValues());
+    }
+
+    generateInputs(){
+        const generateValue = +this.generateInput.value;
+
+        while (this.userInputs.hasChildNodes()){
+            this.userInputs.removeChild(this.userInputs.lastChild);
+        }
+
+        for (let i = 1; i <= generateValue; i++){
+            let generatedInput = document.createElement('input');
+            generatedInput.type = 'text';
+            generatedInput.id = 'input' + i;
+            this.userInputs.appendChild(generatedInput);
+        }
+
+        this.getGeneratedInputs(generateValue)
+    }
+
+    getGeneratedInputs(generateValue){
+        for (let i = 1; i <= generateValue; i++){
+            this.newInput = document.querySelector('#input' + i);
+        }
+        this.newInput.addEventListener('input', () => this.getCalculatedValues());
     }
 
     getCalculatedValues(){

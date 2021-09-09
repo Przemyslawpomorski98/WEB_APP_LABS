@@ -7,10 +7,12 @@ var App = /** @class */ (function () {
         this.checkValues();
     };
     App.prototype.getInputs = function () {
-        this.input1 = document.querySelector('#input1');
-        this.input2 = document.querySelector('#input2');
-        this.input3 = document.querySelector('#input3');
-        this.input4 = document.querySelector('#input4');
+        this.generateInput = document.querySelector('#generateInput');
+        this.userInputs = document.querySelector('#userInputs');
+        // this.input1 = document.querySelector('#input1');
+        // this.input2 = document.querySelector('#input2');
+        // this.input3 = document.querySelector('#input3');
+        // this.input4 = document.querySelector('#input4');
         this.sum_input = document.querySelector('#sum');
         this.avg_input = document.querySelector('#avg');
         this.min_input = document.querySelector('#min');
@@ -18,10 +20,31 @@ var App = /** @class */ (function () {
     };
     App.prototype.checkValues = function () {
         var _this = this;
-        this.input1.addEventListener('input', function () { return _this.getCalculatedValues(); });
-        this.input2.addEventListener('input', function () { return _this.getCalculatedValues(); });
-        this.input3.addEventListener('input', function () { return _this.getCalculatedValues(); });
-        this.input4.addEventListener('input', function () { return _this.getCalculatedValues(); });
+        this.generateInput.addEventListener('input', function () { return _this.generateInputs(); });
+        // this.input1.addEventListener('input', () => this.getCalculatedValues());
+        // this.input2.addEventListener('input', () => this.getCalculatedValues());
+        // this.input3.addEventListener('input', () => this.getCalculatedValues());
+        // this.input4.addEventListener('input', () => this.getCalculatedValues());
+    };
+    App.prototype.generateInputs = function () {
+        var generateValue = +this.generateInput.value;
+        while (this.userInputs.hasChildNodes()) {
+            this.userInputs.removeChild(this.userInputs.lastChild);
+        }
+        for (var i = 1; i <= generateValue; i++) {
+            var generatedInput = document.createElement('input');
+            generatedInput.type = 'text';
+            generatedInput.id = 'input' + i;
+            this.userInputs.appendChild(generatedInput);
+        }
+        this.getGeneratedInputs(generateValue);
+    };
+    App.prototype.getGeneratedInputs = function (generateValue) {
+        var _this = this;
+        for (var i = 0; i <= generateValue; i++) {
+            this.newInput = document.querySelector('#input' + i);
+        }
+        this.newInput.addEventListener('input', function () { return _this.getCalculatedValues(); });
     };
     App.prototype.getCalculatedValues = function () {
         var value1 = +this.input1.value;

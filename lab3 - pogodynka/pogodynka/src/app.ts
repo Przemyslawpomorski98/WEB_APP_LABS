@@ -27,10 +27,10 @@ export class App {
     }
     catchClick(){
         const btn = document.getElementById("btn");
-        btn.addEventListener('click', printData())
+        btn.addEventListener('click', this.printData)
     }
     printData(){
-
+        console.log("hejka")
     }
 
 }
