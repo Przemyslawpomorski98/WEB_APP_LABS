@@ -43,7 +43,6 @@ export class UI {
     renderMainView(forecastData: IForecastData, activeCity: IWeatherData) {
         if (forecastData) {
             document.getElementById('main').classList.add('main--visible');
-            // this.switchTheme(activeCity.weather[0].id);
             this.renderForecast(forecastData);
             // general
             document.getElementById('mainCity').innerHTML = activeCity.name;
@@ -91,24 +90,6 @@ export class UI {
             wrapper.appendChild(item);
         });
     }
-
-    // switchTheme(weatherId: number) {
-    //     const firstNumber = String(weatherId)[0];
-    //     const video = document.getElementById('bgVideo') as HTMLVideoElement;
-    //     let videoSrc;
-    //     switch (firstNumber) {
-    //         case WEATHER_TYPES.thunderstorm: videoSrc = 'https://static.videezy.com/system/resources/previews/000/044/582/original/dark-forest.mp4'; break;
-    //         case WEATHER_TYPES.drizzle: videoSrc = 'https://static.videezy.com/system/resources/previews/000/044/767/original/P1140828.mp4'; break;
-    //         case WEATHER_TYPES.rain: videoSrc = 'https://static.videezy.com/system/resources/previews/000/049/047/original/panning-and-close-up-to-rain-drop-on-the-glass-of-window.mp4'; break;
-    //         case WEATHER_TYPES.snow: videoSrc = 'https://cdn.videvo.net/videvo_files/video/free/2015-09/small_watermarked/Slow_Snow_Seg_Comp_Flakes_preview.webm'; break;
-    //         case WEATHER_TYPES.atmosphere: videoSrc = 'https://static.videezy.com/system/resources/previews/000/034/069/original/Mountain-rain5.mp4'; break;
-    //         case WEATHER_TYPES.clear: videoSrc = 'https://static.videezy.com/system/resources/previews/000/039/466/original/58_28_08_19.mp4'; break;
-    //         default:  videoSrc = 'https://static.videezy.com/system/resources/previews/000/039/466/original/58_28_08_19.mp4'; break;
-    //     }
-    //     // why two groups have the same key code group wtf // cloudy
-    //     if(weatherId > 800) videoSrc = 'https://cdn.videvo.net/videvo_files/video/free/2020-07/small_watermarked/06_1596083776_preview.webm';
-    //     video.src = videoSrc;
-    // }
 
     // aside UI
     removeCity(id: number) {
