@@ -6,23 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <title>lab3</title>
+  <title>Cw-03 - pogodynka</title>
 </head>
 
 <body>
+  <video autoplay muted loop id="bgVideo" class="bg-video">
+    <source src="https://cdn.videvo.net/videvo_files/video/free/2020-07/small_watermarked/06_1596083776_preview.webm" type="video/mp4">
+  </video>
   <div class="toast" id="errorToast">
-    <p>Przepraszam, takie miasto nie istnieje</p>
+    <p>Ooopsie, this city probably does not exist ¯\_(ツ)_/¯</p>
   </div>
   <main>
-    <form class="inputWrapper" id="weatherForm">
-      <input id="cityInput" class="input" type="text" placeholder="Add new city" />
-      <button id="cityButton" class="button" type="submit" disabled="true"></button>
-    </form>
-    <aside>
-      <ul id="cityList" class="city-list">
-        <!-- render childs here -->
-      </ul>
-    </aside>
     <div class="main" id="main">
       <div class="current">
         <img src="" alt="" id="mainIcon" class="main-icon">
@@ -51,7 +45,15 @@
       </ul>
     </div>
   </main>
-  
+  <aside>
+    <form class="inputWrapper" id="weatherForm">
+      <input id="cityInput" class="input" type="text" placeholder="Add new city" />
+      <button id="cityButton" class="button" type="submit" disabled="true"></button>
+    </form>
+    <ul id="cityList" class="city-list">
+      <!-- render childs here -->
+    </ul>
+  </aside>
 
   <script src="index.js"></script>
 </body>

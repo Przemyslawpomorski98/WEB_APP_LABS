@@ -1,57 +1,201 @@
-let clapSound: HTMLAudioElement;
-let boomSound: HTMLAudioElement;
-let hihatSound: HTMLAudioElement;
-let kickSound: HTMLAudioElement;
-
-const channel1: any[] = [];
-appStart();
-
-function appStart(): void {
-    document.body.addEventListener('keypress', onKeyDown);
-    const playChannel1 = document.querySelector('#playChannel1');
-    playChannel1.addEventListener('click', onPlayChannel1)
-    getAudioTags();
+interface ISound {
+    key: string,
+    time: number
 }
 
-function onPlayChannel1(): void  {
-    channel1.forEach(sound => {
-        setTimeout(() => playSound(sound.key), sound.time)
-    })
+interface ISoundEl {
+    element: HTMLAudioElement,
+    key: string
 }
 
-function getAudioTags() {
-    clapSound = document.querySelector('[data-sound="clap"]');
-    boomSound = document.querySelector('[data-sound="boom"]');
-    hihatSound = document.querySelector('[data-sound="hihat"]');
-    kickSound = document.querySelector('[data-sound="kick"]');
-}
+class Drumkit {
+    sounds: Array<HTMLAudioElement> = [];
 
-function onKeyDown(ev: KeyboardEvent): void {
-    const key = ev.key;
-    const time = ev.timeStamp;
-    channel1.push({key, time});
-    playSound(key);
-    console.log(channel1);
-}
+    constructor() {
+        document.querySelectorAll('audio').forEach((el) => {
+            this.sounds.push(el);
+        })
 
-function playSound(key: string) {
-    switch(key){
-        case 'a':
-            clapSound.currentTime = 0;
-            clapSound.play();
-            break;
-        case 's':
-            boomSound.currentTime = 0;
-            boomSound.play();
-            break;
-        case 'k':
-            hihatSound.currentTime = 0;
-            hihatSound.play();
-            break;
-        case 'l':
-            kickSound.currentTime = 0;
-            kickSound.play();
-            break;
+        new DrumkitUI(this.sounds);
     }
 }
 
+class DrumkitUI {
+    statsSection = document.getElementById('UI-section');
+    chanels: ISound[][] = [[]];
+    sounds: ISoundEl[] = [];
+    soundButtons: HTMLButtonElement[] = [];
+    chanelsDOMElements: {
+        playBtn: HTMLButtonElement,
+        recordBtn: HTMLButtonElement,
+        progressBar: HTMLSpanElement
+    }[] = [];
+    activeChanel: number = null;
+    constructor(sounds: HTMLAudioElement[]) {
+        // on init map sound to class variable and perpare event listener
+        this.sounds = sounds.map((element) => ({
+            element,
+            key: element.dataset.key
+        }));
+        document.body.addEventListener('keypress', (ev) => this.onKeyDown(ev));
+
+        this.renderButtons(sounds);
+        this.createChanels();
+    }
+
+    renderButtons(sounds: HTMLAudioElement[]) {
+        const container = document.getElementById('buttons');
+        // create buttons in DOM
+        sounds.forEach(element => {
+            const soundBtn = document.createElement('button');
+            soundBtn.innerText = `${element.dataset.key}`;
+            // assign key to button, to recognize which is which
+            soundBtn.dataset.soundKey = element.dataset.key;
+            // here we need seperate event for each button
+            soundBtn.addEventListener('click', (ev) => this.onClick(element.dataset.key, ev));
+            // save button in class, just like sounds elements
+            this.soundButtons.push(soundBtn);
+            container.appendChild(soundBtn);
+        });
+    }
+
+    onClick(key: string, ev: MouseEvent) {
+        const time = ev.timeStamp;
+        if (this.activeChanel !== null) {
+            this.chanels[this.activeChanel].push({
+                key: key,
+                time: time
+            });
+        }
+        this.playSound(key);
+    }
+
+    onKeyDown(ev: KeyboardEvent) {
+        const key = ev.key;
+        const time = ev.timeStamp;
+        if (this.activeChanel !== null) {
+            this.chanels[this.activeChanel].push({
+                key: key,
+                time: time
+            });
+        }
+
+        this.playSound(key);
+    }
+
+    playSound(key: string = null) {
+        // if there's no sound, do nothing
+        // see this.activateChanel for example
+        if (key) {
+            this.soundButtons.find((el) => el.dataset.soundKey === key);
+            const element = this.sounds.find((v) => v.key === key).element;
+            element.currentTime = 0;
+            element.play();
+            // this.giveAnimation(btn);
+        }
+    }
+
+    // giveAnimation(btn: HTMLButtonElement) {
+    //     const animSpan = document.createElement('span');
+    //     btn.classList.add("playing");
+    //     btn.appendChild(animSpan);
+    //     setTimeout(() => {
+    //         btn.classList.remove("playing");
+    //     }, 100);
+    //     animSpan.addEventListener('animationend', () => {
+    //         animSpan.remove();
+    //     })
+    // }
+
+    createChanels() {
+        const container = document.getElementById('chanels');
+        for (let i = 0; i < 4; i++) {
+            const chanelContainer = document.createElement('div');
+            chanelContainer.classList.add("chanelContainer");
+            // record button
+            const recordBtn = document.createElement('button');
+            recordBtn.className = `recordBtn`;
+            recordBtn.addEventListener('click', (ev) => this.activateChanel(i, ev));
+            chanelContainer.appendChild(recordBtn);
+            // play button 
+            const playBtn = document.createElement('button');
+            playBtn.className = `playBtn`;
+            playBtn.disabled = true;
+            const s = playBtn.addEventListener('click', (ev) => this.onPlayStopChanel(i));
+            chanelContainer.appendChild(playBtn);
+            // progress bar 
+            const progressBarContainer = document.createElement('div');
+            progressBarContainer.className = `progressBar`;
+            const progressBar = document.createElement('span');
+            progressBar.addEventListener('animationend', () => {
+                progressBar.style.animation = null;
+                this.chanelsDOMElements[i].playBtn.disabled = false;
+            })
+            progressBarContainer.appendChild(progressBar);
+            chanelContainer.appendChild(progressBarContainer);
+
+            this.chanelsDOMElements.push({
+                playBtn,
+                recordBtn,
+                progressBar
+            });
+            container.appendChild(chanelContainer);
+        }
+    }
+
+    activateChanel(chanelIndex: number, event: MouseEvent) {
+        // this click event determintaes recording time
+        this.chanels[chanelIndex] = [{
+            time: event.timeStamp,
+            key: null
+        }];
+        this.activeChanel = chanelIndex;
+        this.chanelsDOMElements.forEach(el => {
+            el.recordBtn.disabled = true;
+        })
+        this.chanelsDOMElements[chanelIndex].playBtn.disabled = false;
+        this.chanelsDOMElements[chanelIndex].playBtn.classList.add('stopBtn');
+    }
+
+    onPlayStopChanel(chanelIndex: number) {
+        if (this.activeChanel === chanelIndex) {
+            this.stopRecording(chanelIndex);
+        }
+        else {
+            // play
+            const chanel = this.chanels[chanelIndex];
+            let prevTime = chanel[0].time;
+            this.initPlayingBehavior(chanelIndex);
+
+            chanel.forEach((sound: ISound) => {
+                const time = sound.time - prevTime;
+                setTimeout(() => {
+                    this.playSound(sound.key);
+                }, time);
+            })
+        }
+    }
+
+    stopRecording(chanelIndex: number) {
+        this.chanelsDOMElements[chanelIndex].playBtn.classList.remove('stopBtn');
+       
+        this.chanelsDOMElements.forEach(el => {
+            el.recordBtn.disabled = false;
+        })
+
+        this.activeChanel = null;
+    }
+
+    initPlayingBehavior(chanelIndex: number) {
+        this.chanelsDOMElements[chanelIndex].playBtn.disabled = true;
+
+        // animate progress bar
+        const chanel = this.chanels[chanelIndex];
+        let prevTime = chanel[0].time;
+        const recordingTime = `${(chanel[chanel.length - 1].time - prevTime).toFixed()}ms`;
+        this.chanelsDOMElements[chanelIndex].progressBar.style.animation = ``;
+        this.chanelsDOMElements[chanelIndex].progressBar.style.animation = `progressBarAnim ${recordingTime} forwards linear`;
+    }
+}
+
+const drumkit = new Drumkit();

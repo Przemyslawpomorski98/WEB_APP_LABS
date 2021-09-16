@@ -4,14 +4,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Lab1</title>
 </head>
 <body>
-    <audio src="sounds/clap.wav" data-sound="clap"></audio>
-    <audio src="sounds/boom.wav" data-sound="boom"></audio>
-    <audio src="sounds/hihat.wav" data-sound="hihat"></audio>
-    <audio src="sounds/kick.wav" data-sound="kick"></audio>
-    <button id="playChannel1">Play</button>
-    <script src="index.js"></script>
+    <audio src="sounds/clap.wav" data-sound="clap" data-key="a"></audio>
+    <audio src="sounds/boom.wav" data-sound="boom" data-key="s"></audio>
+    <audio src="sounds/hihat.wav" data-sound="hihat" data-key="k"></audio>
+    <audio src="sounds/kick.wav" data-sound="kick" data-key="l"></audio>
+    <h1>Drumkit App</h1>
+    <drumkit_wrapper>
+        <section class="drumkit-buttons" id="buttons"></section>
+        <section class="chanels" id="chanels"></section>
+    </drumkit_wrapper>
+<script src="index.js"></script>
 </body>
 </html>
