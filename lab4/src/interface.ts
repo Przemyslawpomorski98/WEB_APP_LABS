@@ -19,7 +19,7 @@ export class INote extends INoteGen {
     constructor(data: INoteGen = null) {
         super();
         this.id = data?.id ?? v4();
-        // TODO do this better :C
+        
         if (data && Object.keys(data).length) {
             this.title = data.title;
             this.content = data.content;

@@ -91,21 +91,8 @@ class DrumkitUI {
             const element = this.sounds.find((v) => v.key === key).element;
             element.currentTime = 0;
             element.play();
-            // this.giveAnimation(btn);
         }
     }
-
-    // giveAnimation(btn: HTMLButtonElement) {
-    //     const animSpan = document.createElement('span');
-    //     btn.classList.add("playing");
-    //     btn.appendChild(animSpan);
-    //     setTimeout(() => {
-    //         btn.classList.remove("playing");
-    //     }, 100);
-    //     animSpan.addEventListener('animationend', () => {
-    //         animSpan.remove();
-    //     })
-    // }
 
     createChanels() {
         const container = document.getElementById('chanels');

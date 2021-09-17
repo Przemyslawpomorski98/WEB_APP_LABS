@@ -13,15 +13,6 @@ enum LIST_ELEMTNS {
     icon = 'icon'
 }
 
-enum WEATHER_TYPES {
-    thunderstorm = '2',
-    drizzle = '3',
-    rain = '5',
-    snow = '6',
-    atmosphere = '7',
-    clear = '8'
-}
-
 export class UI {
     mainContext: Main;
     constructor(main: Main) {

@@ -20,12 +20,6 @@ export class Note {
         noteEl.tabIndex = 0;
         noteEl.addEventListener('click', (e: MouseEvent) => {
             new Modal(note, this.UI);
-            // AppNotifications.getInstance().addNotification(note);
-        });
-        noteEl.addEventListener('keyup', (e: KeyboardEvent) => {
-            if (e.code === 'Enter' || e.code === 'Space') {
-                new Modal(note, this.UI);
-            }
         });
 
         return noteEl;
