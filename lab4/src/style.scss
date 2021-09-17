@@ -1,0 +1,69 @@
+@import "styles/reset";
+@import "styles/variables";
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+html body {
+    background: $bg-color;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: flex-end;
+    background-size: 16px;
+    color: #e7e7e7;
+    font-family: "Roboto", sans-serif;
+}
+
+// MAIN
+main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    box-sizing: border-box;
+    padding: 10px;
+
+    .main {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+        .content {
+            height: 100%;
+            flex: 1;
+            gap: 1rem;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            overflow: auto;
+        }
+    }
+}
+
+@import 'styles/toolbar';
+@import 'styles/notes';
+@import 'styles/modal';
+
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: $bg-color;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $unactive-color;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: $action-color;
+}
